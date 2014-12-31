@@ -5,8 +5,9 @@
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
   root.Program = (function() {
-    function Program(gender) {
+    function Program(gender, fitness) {
       this.gender = gender;
+      this.fitness = fitness;
     }
 
     Program.prototype.setRun = function(func) {
