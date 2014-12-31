@@ -102,4 +102,6 @@
     return console.log(last_gen[last_gen.length].run(24));
   };
 
+  run();
+
 }).call(this);

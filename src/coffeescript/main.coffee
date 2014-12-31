@@ -76,3 +76,5 @@ run = ->
   for j in [0..10]
     last_gen = generation(last_gen)
   console.log last_gen[last_gen.length].run(24)
+
+run()
