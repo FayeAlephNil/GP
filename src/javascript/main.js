@@ -43,47 +43,63 @@
   };
 
   random = function() {
-    var a_factor, a_negative, b_factor, b_negative, gender, gender_factor;
+    var a_factor, a_negative, b_factor, b_negative;
     a_factor = Math.floor(Math.random() * 10);
     b_factor = Math.floor(Math.random() * 10);
     a_negative = Math.floor(Math.random() * 10);
     b_negative = Math.floor(Math.random() * 10);
-    gender_factor = Math.floor(Math.random() * 10);
-    gender = 'male';
     if (a_negative % 2 === 0) {
       a_factor = a_factor * -1;
     }
     if (b_negative % 2 === 0) {
       b_factor = b_factor * -1;
     }
-    if (gender_factor % 2 === 0) {
-      gender = 'female';
-    }
-    return new Linear(fitness_test, a_factor, b_factor, gender);
+    return new Linear(fitness_test, a_factor, b_factor);
   };
 
   generation = function(programs) {
-    var i, last_best, next, program, _i, _ref;
+    var average, i, j, last_best, last_less_than_average, next, prog, program, sum, _i, _j, _k, _len, _ref;
     next = [];
     last_best = random();
-    for (i = _i = 0, _ref = programs.lengrh; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+    sum = 0;
+    for (_i = 0, _len = programs.length; _i < _len; _i++) {
+      prog = programs[_i];
+      sum += prog.fitness;
+    }
+    average = sum / programs.length;
+    for (i = _j = 0, _ref = programs.length; 0 <= _ref ? _j <= _ref : _j >= _ref; i = 0 <= _ref ? ++_j : --_j) {
       program = programs[i];
       if (program.fitness < last_best.fitness) {
         last_best = program;
       }
+      if ((typeof last_less_than_average !== "undefined" && last_less_than_average !== null) && program.fitness < average) {
+        next.push(crossover(program, last_less_than_average));
+        last_less_than_average = program;
+      } else if (!(last_less_than_average != null) && program.fitness < average) {
+        last_less_than_average = program;
+      }
+      if (program.fitness < average + 10 && (!(program.fitness < average))) {
+        next.push(mutation(program));
+      }
+    }
+    for (j = _k = 0; _k <= 2; j = ++_k) {
+      next.push(random());
     }
     next.push(last_best);
     return next;
   };
 
   run = function() {
-    var i, programs, _i, _results;
+    var i, j, last_gen, programs, _i, _j;
     programs = [];
-    _results = [];
     for (i = _i = 0; _i <= 10; i = ++_i) {
-      _results.push(programs[i] = random);
+      programs[i] = random;
     }
-    return _results;
+    last_gen = programs;
+    for (j = _j = 0; _j <= 10; j = ++_j) {
+      last_gen = generation(last_gen);
+    }
+    return console.log(last_gen[last_gen.length].run(24));
   };
 
 }).call(this);

@@ -32,25 +32,38 @@ random = ->
   b_factor = Math.floor(Math.random() * 10)
   a_negative = Math.floor(Math.random() * 10)
   b_negative = Math.floor(Math.random() * 10)
-  gender_factor = Math.floor(Math.random() * 10)
-  gender = 'male'
   if a_negative % 2 is 0
     a_factor = a_factor * -1
   if b_negative % 2 is 0
     b_factor = b_factor * -1
-  if gender_factor % 2 is 0
-    gender = 'female'
-  return new Linear(fitness_test, a_factor, b_factor, gender)
+  return new Linear(fitness_test, a_factor, b_factor)
 
 
 
 generation = (programs) ->
   next = []
   last_best = random()
-  for i in [0..programs.lengrh]
+
+  sum = 0
+  for prog in programs
+    sum += prog.fitness
+  average = sum/programs.length
+
+  for i in [0..programs.length]
     program = programs[i]
     if  program.fitness < last_best.fitness
       last_best = program
+
+    if last_less_than_average? and program.fitness < average
+      next.push(crossover(program, last_less_than_average))
+      last_less_than_average = program
+    else if not(last_less_than_average?) and program.fitness < average
+      last_less_than_average = program
+
+    if program.fitness < average + 10 and (not(program.fitness < average))
+      next.push(mutation(program))
+
+  next.push(random()) for j in [0..2]
   next.push(last_best)
   return next
 
@@ -58,3 +71,8 @@ run = ->
   programs = []
   for i in [0..10]
     programs[i] = random
+
+  last_gen = programs
+  for j in [0..10]
+    last_gen = generation(last_gen)
+  console.log last_gen[last_gen.length].run(24)

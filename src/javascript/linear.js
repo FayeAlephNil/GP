@@ -11,11 +11,11 @@
   root.Linear = (function(_super) {
     __extends(Linear, _super);
 
-    function Linear(fitness_test, a, b, gender, fitness) {
+    function Linear(fitness_test, a, b, fitness) {
       this.fitness_test = fitness_test;
       this.a = a;
       this.b = b;
-      Linear.__super__.constructor.call(this, gender, fitness);
+      Linear.__super__.constructor.call(this, fitness);
       this.run = function(x) {
         return this.a * x + this.b;
       };

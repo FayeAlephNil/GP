@@ -5,8 +5,7 @@
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
   root.Program = (function() {
-    function Program(gender, fitness) {
-      this.gender = gender;
+    function Program(fitness) {
       this.fitness = fitness;
     }
 

@@ -1,6 +1,6 @@
 root = exports ? this
 
 class root.Program
-  constructor: (@gender, @fitness) ->
+  constructor: (@fitness) ->
 
   setRun: (func) -> @run = func
